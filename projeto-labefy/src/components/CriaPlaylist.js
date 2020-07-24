@@ -1,6 +1,14 @@
 import React from 'react';
 import axios from "axios";
+import { Button, TextField } from '@material-ui/core';
+import styled from 'styled-components';
 
+const AppContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+`;
 
 class CriaPlayList extends React.Component {
 
@@ -39,16 +47,20 @@ class CriaPlayList extends React.Component {
     
   render (){
   return (
-    <div>
+    <AppContainer>
 
-      <input
+      <TextField
         value={this.state.playlistDigitada}
         type="text"
+        placeholder="Nova playlist"
         onChange={this.onChangeInput}
       />
-      <button onClick={this.criaPlaylist}>Salvar Playlist</button>
+      <Button 
+      variant="outlined"
+      color="primary"
+      onClick={this.criaPlaylist}>Salvar Playlist</Button>
       
-    </div>
+    </AppContainer>
   )}
 }
 

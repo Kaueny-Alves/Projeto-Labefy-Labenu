@@ -1,22 +1,12 @@
-import React from 'react';
-import CriaPlayList from "./components/CriaPlaylist";
-import ListPlayList from "./components/ListPlayList"
-import AdicionaMusicaPlayList from "./components/AdicionaMusicaPlayList"
+import React from "react";
+import { Router } from "./router/Router";
 
-
-class App extends React.Component {
- 
-  
-
-  render (){
+function App() {
   return (
-    <div>
-  <CriaPlayList />
-  <ListPlayList />
-  <AdicionaMusicaPlayList/>
-
-    </div>
-  )}
+    <>
+      <Router />
+    </>
+  );
 }
 
 export default App;
