@@ -1,7 +1,14 @@
 import React from 'react';
 import axios from "axios";
+import { Button, TextField, Card } from '@material-ui/core';
+import styled from 'styled-components';
 
-
+const AppContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+`;
 
 class AdicionaMusicaPlayList extends React.Component {
 
@@ -54,28 +61,31 @@ class AdicionaMusicaPlayList extends React.Component {
 
     render (){
         return(
-            <div>
+            <AppContainer>
 
-            <input
+            <TextField
               type="text"
               placeholder="musica"
               onChange={this.onChangeMusica}
             />
-             <input
+             <TextField
               value={this.state.artistaDigitado}
               type="text"
               placeholder="artista"
               onChange={this.onChangeArtista}
             />
-             <input
+             <TextField
               value={this.state.urlDigitada}
               type="url"
               placeholder="url"
               onChange={this.onChangeUrl}
             />
-            <button onClick= {()=> this.criaMusica()}>Criar Musica</button>
+            <Button 
+            variant="outlined"
+            color="primary"
+            onClick= {()=> this.criaMusica()}>Criar Musica</Button>
            
-          </div>
+          </AppContainer>
           
          ) }}
 
