@@ -12,7 +12,6 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import PlaylistAddCheckIcon from "@material-ui/icons/PlaylistAddCheck";
 import QueueMusicIcon from "@material-ui/icons/QueueMusic";
-import DraftsIcon from "@material-ui/icons/Drafts";
 
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import PlaylistPlayIcon from "@material-ui/icons/PlaylistPlay";
@@ -81,7 +80,9 @@ export const Router = () => {
 
   return (
     <>
+    
       <BrowserRouter>
+      <AppContainer>
         <div>
           <Button
             aria-controls="customized-menu"
@@ -133,7 +134,7 @@ export const Router = () => {
               </StyledMenuItem>
             </StyledLink>
 
-            <StyledLink to="/">
+            <StyledLink to="/listaplay">
               <StyledMenuItem>
                 <ListItemIcon>
                   <PlaylistAddCheckIcon 
@@ -145,7 +146,7 @@ export const Router = () => {
             </StyledLink>
           </StyledMenu>
         </div>
-        <AppContainer>
+        
           <Switch>
             <Route path="/criaplay">
               {/* O que será renderizado quando a rota for "/sobre" */}

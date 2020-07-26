@@ -1,68 +1,81 @@
-import React from 'react';
+import React, { useState } from "react";
 import axios from "axios";
-import { Button, TextField } from '@material-ui/core';
-import styled from 'styled-components';
+import { makeStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import { Button, TextField } from "@material-ui/core";
 
-const AppContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-`;
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    width: 300,
+    height: 300,
+    marginTop:15,
 
-class CriaPlayList extends React.Component {
+  },
+  details: {
+    display: "flex",
+    flexDirection: "column",
+    
+   
+  },
+  content: {
+    flex: "1 0 auto",
+    alignItems: "center",
+    
+  },
+}));
 
-    state ={
-        playlistDigitada: "",
-    }
+export default function CriaPlayList() {
+  const classes = useStyles();
+  const [playlistDigitada, setPlaylistDigitada] = useState("");
 
-  
-    criaPlaylist = () => {
-        const body = {
-          name: this.state.playlistDigitada
-        }
-       
-        axios
-        .post("https://us-central1-labenu-apis.cloudfunctions.net/labefy/playlists", body,
+  const criaPlaylist = () => {
+    const body = {
+      name: playlistDigitada,
+    };
+
+    axios
+      .post(
+        "https://us-central1-labenu-apis.cloudfunctions.net/labefy/playlists",
+        body,
         {
           headers: {
-              authorization: "kaueny-alves-mello" }
+            authorization: "kaueny-alves-mello",
+          },
         }
-        )
-        .then(response => {
-          console.log(response.data)
-          alert(`Playlist Criada com Sucesso`)
-          this.setState({ playlistDigitada: "" })
-        })
-        .catch(erro => {
-          console.log(erro)
-          alert("ERRO ao criar Playlist")
-        })
-     
-    }
-    
-     onChangeInput = event => {
-          this.setState({ playlistDigitada: event.target.value})
-      }
-    
-  render (){
+      )
+      .then((response) => {
+        console.log(response.data);
+        alert(`Playlist Criada com Sucesso`);
+        setPlaylistDigitada(playlistDigitada);
+      })
+      .catch((erro) => {
+        console.log(erro);
+        alert("ERRO ao criar Playlist");
+      });
+  };
+
+  const onChangeInput = (event) => {
+    setPlaylistDigitada(event.target.value);
+  };
+
   return (
-    <AppContainer>
-
-      <TextField
-        value={this.state.playlistDigitada}
-        type="text"
-        placeholder="Nova playlist"
-        onChange={this.onChangeInput}
-      />
-      <Button 
-      variant="outlined"
-      color="primary"
-      onClick={this.criaPlaylist}>Salvar Playlist</Button>
-      
-    </AppContainer>
-  )}
+    <Card className={classes.root}>
+      <div className={classes.details}>
+        <CardContent className={classes.content}>
+          <TextField
+            value={playlistDigitada}
+            type="text"
+            placeholder="Nova playlist"
+            onChange={onChangeInput}
+          />
+           
+          <Button variant="outlined" color="primary" onClick={criaPlaylist}>
+            Salvar Playlist
+          </Button>
+        </CardContent>
+      </div>
+    </Card>
+  );
 }
-
-export default CriaPlayList;
-

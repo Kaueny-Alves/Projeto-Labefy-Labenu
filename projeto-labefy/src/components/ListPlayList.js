@@ -1,6 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import { makeStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    width: 300,
+    height: 300,
+    marginTop:15,
+
+  },
+  details: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  content: {
+    flex: "1 0 auto",
+  },
+}));
 
 const DeletePlayList = styled.span`
   cursor: pointer;
@@ -12,19 +32,18 @@ const PlayList = styled.li`
   color: blue;
 `;
 
-class ListPlayList extends React.Component {
-  state = {
-    list: [],
-    name: "",
-    artist: "",
-    url: "",
-  };
+export default function ListPlayList() {
+  const classes = useStyles();
+  const [list, setList] = useState("");
+  const [musicaDigitada, setMusicaDigitada] = useState("");
+  const [artistaDigitado, setArtistaDigitado] = useState("");
+  const [urlDigitada, setUrlDigitada] = useState("");
 
-  componentDidMount() {
-    this.fetchPlayList();
-  }
+  //const componentDidMount() {
+  //   this.fetchPlayList();
+  // }
 
-  fetchPlayList = () => {
+  const fetchPlayList = () => {
     axios
       .get(
         "https://us-central1-labenu-apis.cloudfunctions.net/labefy/playlists",
@@ -35,14 +54,14 @@ class ListPlayList extends React.Component {
         }
       )
       .then((response) => {
-        this.setState({ list: response.data.result.list });
+        setList(response.data.result.list);
       })
       .catch((erro) => {
         console.log(erro);
       });
   };
 
-  handleDeletePlayList = (playLisId) => {
+  const handleDeletePlayList = (playLisId) => {
     if (window.confirm("Tem certeza de que deseja deletar?")) {
       axios
         .delete(
@@ -55,7 +74,7 @@ class ListPlayList extends React.Component {
         )
         .then((response) => {
           alert(" apagado com sucesso.");
-          this.fetchPlayList();
+          fetchPlayList();
         })
         .catch((erro) => {
           console.log(erro);
@@ -64,7 +83,7 @@ class ListPlayList extends React.Component {
     }
   };
 
-  searchPlayList = (namePlaylist) => {
+  const searchPlayList = (namePlaylist) => {
     axios
       .get(
         `https://us-central1-labenu-apis.cloudfunctions.net/labefy/playlists/search?name=${namePlaylist}`,
@@ -83,28 +102,15 @@ class ListPlayList extends React.Component {
       });
   };
 
-  render() {
-    return (
-      <div>
-        <ul>
-          {this.state.list.length === 0 && <div>Carregando...</div>}
-          {this.state.list.map((play) => {
-            return (
-              <PlayList onClick={() => this.searchPlayList(play.name)}>
-                {" "}
-                {play.name}
-                <DeletePlayList
-                  onClick={() => this.handleDeletePlayList(play.id)}
-                >
-                  X
-                </DeletePlayList>
-              </PlayList>
-            );
-          })}
-        </ul>
+  return (
+    <Card className={classes.root}>
+      <div className={classes.details}>
+        <CardContent className={classes.content}>
+         
+            lista playLis
+          
+        </CardContent>
       </div>
-    );
-  }
+    </Card>
+  );
 }
-
-export default ListPlayList;
