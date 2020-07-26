@@ -122,8 +122,7 @@ export const Router = () => {
                 <ListItemText primary="Criar Música" />
               </StyledMenuItem>
             </StyledLink>
-
-            <StyledLink to="/playlist">
+            <StyledLink to="/listaplay">
               <StyledMenuItem>
                 <ListItemIcon>
                   <PlaylistPlayIcon 
@@ -134,7 +133,7 @@ export const Router = () => {
               </StyledMenuItem>
             </StyledLink>
 
-            <StyledLink to="/listaplay">
+           <StyledLink to="/playlist">
               <StyledMenuItem>
                 <ListItemIcon>
                   <PlaylistAddCheckIcon 
@@ -144,7 +143,7 @@ export const Router = () => {
                 <ListItemText primary="Detalhes da Playlist" />
               </StyledMenuItem>
             </StyledLink>
-          </StyledMenu>
+  </StyledMenu>
         </div>
         
           <Switch>

@@ -1,59 +1,58 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import { axiosConfig, baseUrl } from "./api";
+import DeleteOutlined from "@material-ui/icons/DeleteOutlined";
+import PlaylistPlay from "@material-ui/icons/PlaylistPlay";
+import { ListItemText, ListItemIcon, withStyles, MenuItem } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     width: 300,
     height: 300,
-    marginTop:15,
-
+    marginTop: 15,
   },
   details: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "row",
   },
   content: {
     flex: "1 0 auto",
   },
+  
+
 }));
 
-const DeletePlayList = styled.span`
-  cursor: pointer;
-  color: red;
-`;
 
-const PlayList = styled.li`
-  cursor: pointer;
-  color: blue;
-`;
+const StyledMenuItem = withStyles((theme) => ({
+  play: {
+    "&:focus": {
+      backgroundColor: theme.palette.primary.main,
+      "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
+        color: theme.palette.common.white,
+      },
+    },
+  },
+}))(MenuItem);
+
 
 export default function ListPlayList() {
   const classes = useStyles();
-  const [list, setList] = useState("");
-  const [musicaDigitada, setMusicaDigitada] = useState("");
-  const [artistaDigitado, setArtistaDigitado] = useState("");
-  const [urlDigitada, setUrlDigitada] = useState("");
+  const [list, setList] = useState([]);
+  const [playlistId, setPlaylisId] = useState([]);
 
-  //const componentDidMount() {
-  //   this.fetchPlayList();
-  // }
+  useEffect(() => {
+    fetchPlayList();
+  }, []);
 
   const fetchPlayList = () => {
     axios
-      .get(
-        "https://us-central1-labenu-apis.cloudfunctions.net/labefy/playlists",
-        {
-          headers: {
-            authorization: "kaueny-alves-mello",
-          },
-        }
-      )
+      .get(baseUrl, axiosConfig)
       .then((response) => {
+        console.log(response.data.result.list);
         setList(response.data.result.list);
       })
       .catch((erro) => {
@@ -61,17 +60,10 @@ export default function ListPlayList() {
       });
   };
 
-  const handleDeletePlayList = (playLisId) => {
+  const handleDelete = (playLisId) => {
     if (window.confirm("Tem certeza de que deseja deletar?")) {
       axios
-        .delete(
-          `https://us-central1-labenu-apis.cloudfunctions.net/labefy/playlists/${playLisId}`,
-          {
-            headers: {
-              authorization: "kaueny-alves-mello",
-            },
-          }
-        )
+        .delete(`${baseUrl}/${playLisId}`, axiosConfig)
         .then((response) => {
           alert(" apagado com sucesso.");
           fetchPlayList();
@@ -88,11 +80,7 @@ export default function ListPlayList() {
       .get(
         `https://us-central1-labenu-apis.cloudfunctions.net/labefy/playlists/search?name=${namePlaylist}`,
 
-        {
-          headers: {
-            authorization: "kaueny-alves-mello",
-          },
-        }
+        axiosConfig
       )
       .then((response) => {
         console.log(response);
@@ -106,9 +94,28 @@ export default function ListPlayList() {
     <Card className={classes.root}>
       <div className={classes.details}>
         <CardContent className={classes.content}>
-         
-            lista playLis
-          
+          {list.map((playlist) => {
+            return (
+             
+                <StyledMenuItem>
+                <ListItemIcon>
+                  <PlaylistPlay
+                    key={playlist.id}
+                    color="secondary"
+                    fontSize="small"
+                  />
+                  </ListItemIcon>
+                  <ListItemText primary={ playlist.name}/>
+                  <ListItemIcon>
+                  <DeleteOutlined 
+                  color="secondary"
+                  fontSize="small"
+                  onClick={() => handleDelete(playlist.id)}
+                  /> 
+                  </ListItemIcon>
+                   </StyledMenuItem>
+            );
+          })}
         </CardContent>
       </div>
     </Card>
